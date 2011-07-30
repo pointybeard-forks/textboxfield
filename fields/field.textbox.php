@@ -845,14 +845,14 @@
 	-------------------------------------------------------------------------*/
 
 		public function buildSortingSQL(&$joins, &$where, &$sort, $order = 'ASC') {
-			if (in_array(strtolower($order), array('random', 'rand')) {
+			if (in_array(strtolower($order), array('random', 'rand'))) {
 				$sort = 'ORDER BY RAND()';
 			}
-			
+
 			else {
 				$sort = sprintf('
 					ORDER BY (
-						SELECT %s 
+						SELECT %s
 						FROM tbl_entries_data_%d
 						WHERE entry_id = e.id
 					) %s',
