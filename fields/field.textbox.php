@@ -19,7 +19,7 @@
 
 			$this->_name = 'Text Box';
 			$this->_required = true;
-			$this->_driver = $this->_engine->ExtensionManager->create('textboxfield');
+			$this->_driver = Symphony::ExtensionManager()->create('textboxfield');
 
 			// Set defaults:
 			$this->set('show_column', 'yes');
@@ -38,7 +38,7 @@
 		public function createTable() {
 			$field_id = $this->get('id');
 
-			return $this->_engine->Database->query("
+			return Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_entries_data_{$field_id}` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`entry_id` INT(11) UNSIGNED NOT NULL,
@@ -99,7 +99,7 @@
 		}
 
 		public function getCurrentHandle($entry_id) {
-			return $this->_engine->Database->fetchVar('handle', 0, sprintf(
+			return Symphony::Database()->fetchVar('handle', 0, sprintf(
 				"
 					SELECT
 						f.handle
@@ -114,7 +114,7 @@
 		}
 
 		public function isHandleLocked($handle, $entry_id) {
-			return (boolean)$this->_engine->Database->fetchVar('id', 0, sprintf(
+			return (boolean)Symphony::Database()->fetchVar('id', 0, sprintf(
 				"
 					SELECT
 						f.id
@@ -131,7 +131,7 @@
 		}
 
 		public function isHandleFresh($handle, $value, $entry_id) {
-			return (boolean)$this->_engine->Database->fetchVar('id', 0, sprintf(
+			return (boolean)Symphony::Database()->fetchVar('id', 0, sprintf(
 				"
 					SELECT
 						f.id

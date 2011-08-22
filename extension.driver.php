@@ -16,11 +16,11 @@
 		}
 		
 		public function uninstall() {
-			$this->_Parent->Database->query("DROP TABLE `tbl_fields_textbox`");
+			Symphony::Database()->query("DROP TABLE `tbl_fields_textbox`");
 		}
 		
 		public function install() {
-			$this->_Parent->Database->query("
+			Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_fields_textbox` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`field_id` INT(11) UNSIGNED NOT NULL,
