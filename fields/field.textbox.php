@@ -514,11 +514,12 @@
 
 		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
+			$formatted = $this->applyFormatting($data);
 
 			$result = array(
-				'handle'			=> $this->createHandle($data, $entry_id),
+				'handle'			=> $this->createHandle($formatted, $entry_id),
 				'value'				=> (string)$data,
-				'value_formatted'	=> $this->applyFormatting($data),
+				'value_formatted'	=> $formatted,
 				'word_count'		=> General::countWords($data)
 			);
 
@@ -582,7 +583,11 @@
 			$max_length = (integer)$this->get('column_length');
 			$max_length = ($max_length ? $max_length : 75);
 
-			$value = strip_tags($data['value']);
+			$value = strip_tags(
+				isset($data['value_formatted'])
+					? $data['value_formatted']
+					: $data['value']
+			);
 
 			if ($max_length < strlen($value)) {
 				$lines = explode("\n", wordwrap($value, $max_length - 1, "\n"));
@@ -590,8 +595,6 @@
 				$value = rtrim($value, "\n\t !?.,:;");
 				$value .= '...';
 			}
-
-			//$value = str_replace('...', '&hellip;', $value);
 
 			if ($max_length > 75) {
 				$value = wordwrap($value, 75, '<br />');
