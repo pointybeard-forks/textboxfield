@@ -1,38 +1,31 @@
 <?php
 
+	/**
+	 * @package textboxfield
+	 */
+
 	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
 
 	require_once(TOOLKIT . '/class.xsltprocess.php');
 
+	/**
+	 * An enhanced text input field.
+	 */
 	class FieldTextBox extends Field {
-		const DISABLE_PROPOGATION = 1;
-
-		protected $_sizes = array();
-		protected $_driver = null;
-
 	/*-------------------------------------------------------------------------
 		Definition:
 	-------------------------------------------------------------------------*/
 
-		public function __construct(&$parent) {
-			parent::__construct($parent);
+		public function __construct() {
+			parent::__construct(Symphony::Engine());
 
 			$this->_name = 'Text Box';
 			$this->_required = true;
-			$this->_driver = Symphony::ExtensionManager()->create('textboxfield');
 
 			// Set defaults:
 			$this->set('show_column', 'yes');
 			$this->set('size', 'medium');
 			$this->set('required', 'yes');
-
-			$this->_sizes = array(
-				array('single', false, __('Single Line')),
-				array('small', false, __('Small Box')),
-				array('medium', false, __('Medium Box')),
-				array('large', false, __('Large Box')),
-				array('huge', false, __('Huge Box'))
-			);
 		}
 
 		public function createTable() {
@@ -164,7 +157,9 @@
 		}
 
 		public function displaySettingsPanel(&$wrapper, $errors = null) {
-			$this->_driver->addSettingsHeaders($this->_engine->Page);
+			Extension_TextBoxField::appendHeaders(
+				Extension_TextBoxField::SETTING_HEADERS
+			);
 
 			parent::displaySettingsPanel($wrapper, $errors);
 
@@ -177,7 +172,13 @@
 			$group = new XMLElement('div');
 			$group->setAttribute('class', 'group');
 
-			$values = $this->_sizes;
+			$values = array(
+				array('single', false, __('Single Line')),
+				array('small', false, __('Small Box')),
+				array('medium', false, __('Medium Box')),
+				array('large', false, __('Large Box')),
+				array('huge', false, __('Huge Box'))
+			);
 
 			foreach ($values as &$value) {
 				$value[1] = $value[0] == $this->get('text_size');
@@ -315,8 +316,6 @@
 		public function commit($propogate = null) {
 			if (!parent::commit()) return false;
 
-			if ($propogate == self::DISABLE_PROPOGATION) return true;
-
 			$id = $this->get('id');
 			$handle = $this->handle();
 
@@ -349,7 +348,9 @@
 	-------------------------------------------------------------------------*/
 
 		public function displayPublishPanel(&$wrapper, $data = null, $error = null, $prefix = null, $postfix = null) {
-			$this->_driver->addPublishHeaders($this->_engine->Page);
+			Extension_TextBoxField::appendHeaders(
+				Extension_TextBoxField::PUBLISH_HEADERS
+			);
 
 			$sortorder = $this->get('sortorder');
 			$element_name = $this->get('element_name');
@@ -410,7 +411,7 @@
 			$input->setAttribute('class', implode(' ', $classes));
 			$input->setAttribute('length', (integer)$this->get('text_length'));
 
-			$this->_engine->ExtensionManager->notifyMembers(
+			Symphony::$ExtensionManager->notifyMembers(
 				$delegate, '/backend/',
 				array(
 					'field'		=> $this,
@@ -442,7 +443,7 @@
 				}
 
 				else {
-					$tfm = new TextformatterManager($this->_engine);
+					$tfm = new TextformatterManager(Symphony::Engine());
 				}
 
 				$formatter = $tfm->create($this->get('text_formatter'));
@@ -622,7 +623,9 @@
 	-------------------------------------------------------------------------*/
 
 		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $prefix = null, $postfix = null) {
-			$this->_driver->addFilteringHeaders($this->_engine->Page);
+			Extension_TextBoxField::appendHeaders(
+				Extension_TextBoxField::FILTER_HEADERS
+			);
 			$field_id = $this->get('id');
 
 			$wrapper->appendChild(new XMLElement(

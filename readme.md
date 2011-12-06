@@ -1,24 +1,4 @@
-# Field: Text Box
-
-An enhanced replacement for the default Text Input and Textarea fields.
-
-__Version:__ 2.2  
-__Date:__ 11 April 2011  
-__Requirements:__ Symphony 2.1  
-__Author:__ Rowan Lewis <me@nbsp.io>  
-__GitHub Repository:__ <http://github.com/rowan-lewis/textboxfield>  
-
-
-## Installation
-
-1. Upload the 'textboxfield' folder in this archive to your Symphony
-   'extensions' folder.
-
-2. Enable it by selecting the "Field: Text Box", choose Enable from the
-   with-selected menu, then click Apply.
-
-3. You can now add the "Text Box" field to your sections.
-
+# Text Box
 
 ## Features
 
@@ -35,9 +15,26 @@ __GitHub Repository:__ <http://github.com/rowan-lewis/textboxfield>
  - Handles are always unique.
 
 
+## Installation
+
+1. Upload the 'textboxfield' folder in this archive to your Symphony
+   'extensions' folder.
+
+2. Enable it by selecting the "Field: Text Box", choose Enable from the
+   with-selected menu, then click Apply.
+
+3. You can now add the "Text Box" field to your sections.
+
+
 ## Changelog
 
-*Version 2.0.17, 1 November 2010*
+*Version 2.2, 11 April 2011*
+
+- Fixed incorrect setting name for 'column_length'.
+- Fixed issue causing JavaScript to be executed on the wrong page.
+- Don't rely on MySQL to create tables with the MyISAM, do it ourself.
+
+*Version 2.1, 1 November 2010*
 
  - Added checkbox to wrap output in CDATA regardless of formatting.
  - Added checkbox to toggle inclusion of handles in output.
