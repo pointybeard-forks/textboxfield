@@ -332,7 +332,7 @@
 				'text_handle'		=> $this->get('text_handle')
 			);
 
-			$this->Database->query("
+			Symphony::Database()->query("
 				DELETE FROM
 					`tbl_fields_{$handle}`
 				WHERE
@@ -340,7 +340,7 @@
 				LIMIT 1
 			");
 
-			return $this->Database->insert($fields, "tbl_fields_{$handle}");
+			return Symphony::Database()->insert($fields, "tbl_fields_{$handle}");
 		}
 
 	/*-------------------------------------------------------------------------
@@ -411,7 +411,7 @@
 			$input->setAttribute('class', implode(' ', $classes));
 			$input->setAttribute('length', (integer)$this->get('text_length'));
 
-			Symphony::$ExtensionManager->notifyMembers(
+			Symphony::ExtensionManager()->notifyMembers(
 				$delegate, '/backend/',
 				array(
 					'field'		=> $this,
