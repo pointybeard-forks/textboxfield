@@ -221,7 +221,7 @@
 
 			$input = Widget::Input(
 				"fields[{$order}][text_length]",
-				(integer)$this->get('text_length')
+				(string)$this->get('text_length')
 			);
 			$input->setAttribute('size', '3');
 
@@ -237,7 +237,7 @@
 
 			$input = Widget::Input(
 				"fields[{$order}][column_length]",
-				(integer)$this->get('column_length')
+				(string)$this->get('column_length')
 			);
 			$input->setAttribute('size', '3');
 
