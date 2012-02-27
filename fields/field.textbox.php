@@ -392,7 +392,7 @@
 			// Text Box:
 			else {
 				$input = Widget::Textarea(
-					"fields{$prefix}[$element_name]{$postfix}", '20', '50', General::sanitize($data['value'])
+					"fields{$prefix}[$element_name]{$postfix}", 20, 50, General::sanitize($data['value'])
 				);
 
 				###
