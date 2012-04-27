@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="textboxfield">
+<extension id="textboxfield" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Text Box</name>
 	<description>The Text Box field is a replacement for both the standard text input and textarea fields. It combines both to create a field that supports text formatting and validation rules.</description>
 	<repo type="github">https://github.com/rowan-lewis/textboxfield</repo>
