@@ -221,7 +221,7 @@
 
 			$input = Widget::Input(
 				"fields[{$order}][text_length]",
-				(integer)$this->get('text_length')
+				(string)$this->get('text_length')
 			);
 			$input->setAttribute('size', '3');
 
@@ -237,7 +237,7 @@
 
 			$input = Widget::Input(
 				"fields[{$order}][column_length]",
-				(integer)$this->get('column_length')
+				(string)$this->get('column_length')
 			);
 			$input->setAttribute('size', '3');
 
@@ -392,7 +392,7 @@
 			// Text Box:
 			else {
 				$input = Widget::Textarea(
-					"fields{$prefix}[$element_name]{$postfix}", '20', '50', General::sanitize($data['value'])
+					"fields{$prefix}[$element_name]{$postfix}", 20, 50, General::sanitize($data['value'])
 				);
 
 				###
@@ -622,30 +622,14 @@
 		Filtering:
 	-------------------------------------------------------------------------*/
 
-		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $prefix = null, $postfix = null) {
+		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
 			Extension_TextBoxField::appendHeaders(
 				Extension_TextBoxField::FILTER_HEADERS
 			);
 			$field_id = $this->get('id');
 
-			$wrapper->appendChild(new XMLElement(
-				'h4', sprintf(
-					'%s <i>%s</i>',
-					$this->get('label'),
-					$this->name()
-				)
-			));
+			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
 			$wrapper->setAttribute('class', $wrapper->getAttribute('class') . ' field-textbox');
-
-			$prefix = ($prefix ? "[{$prefix}]" : '');
-			$postfix = ($postfix ? "[{$postfix}]" : '');
-
-			$label = Widget::Label('Value');
-			$label->appendChild(Widget::Input(
-				"fields[filter]{$prefix}[{$field_id}]{$postfix}",
-				($data ? General::sanitize($data) : null)
-			));
-			$wrapper->appendChild($label);
 
 			$filters = array(
 				array(
