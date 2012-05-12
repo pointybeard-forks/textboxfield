@@ -48,18 +48,17 @@
 				$page = Administration::instance()->Page;
 
 				if ($type === self::PUBLISH_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/publish.css', 'screen', 10251840);
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/publish.js', 10251840);
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.css', 'screen');
+					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.js');
 				}
 
 				if ($type === self::FILTER_HEADERS) {
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/interface.js', 10251840);
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/filtering.js', 10251841);
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/filtering.css', 'screen', 10251840);
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.css', 'screen');
+					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.js');
 				}
 
 				if ($type === self::SETTING_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/settings.css', 'screen', 10251840);
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.settings.css', 'screen');
 				}
 
 				self::$appendedHeaders &= $type;
