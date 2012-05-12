@@ -513,7 +513,7 @@
 			return self::__OK__;
 		}
 
-		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = null) {
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
 			$formatted = $this->applyFormatting($data);
 
@@ -622,30 +622,14 @@
 		Filtering:
 	-------------------------------------------------------------------------*/
 
-		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $prefix = null, $postfix = null) {
+		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
 			Extension_TextBoxField::appendHeaders(
 				Extension_TextBoxField::FILTER_HEADERS
 			);
 			$field_id = $this->get('id');
 
-			$wrapper->appendChild(new XMLElement(
-				'h4', sprintf(
-					'%s <i>%s</i>',
-					$this->get('label'),
-					$this->name()
-				)
-			));
+			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
 			$wrapper->setAttribute('class', $wrapper->getAttribute('class') . ' field-textbox');
-
-			$prefix = ($prefix ? "[{$prefix}]" : '');
-			$postfix = ($postfix ? "[{$postfix}]" : '');
-
-			$label = Widget::Label('Value');
-			$label->appendChild(Widget::Input(
-				"fields[filter]{$prefix}[{$field_id}]{$postfix}",
-				($data ? General::sanitize($data) : null)
-			));
-			$wrapper->appendChild($label);
 
 			$filters = array(
 				array(
