@@ -66,25 +66,6 @@
 		}
 
 		/**
-		 * Extension information.
-		 *
-		 * @return array
-		 */
-		public function about() {
-			return array(
-				'name'			=> 'Field: Text Box',
-				'version'		=> '2.3',
-				'release-date'	=> '2011-12-05',
-				'author'		=> array(
-					'name'			=> 'Rowan Lewis',
-					'website'		=> 'http://nbsp.io/',
-					'email'			=> 'me@rowanlewis.com'
-				),
-				'description' => 'An enhanced text input field.'
-			);
-		}
-
-		/**
 		 * Cleanup installation.
 		 *
 		 * @return boolean

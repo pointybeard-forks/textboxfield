@@ -14,13 +14,15 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="2.3" date="2009-05-11" min="2.3">
-			- Added german translation.
-			- Fixed issue where text formatter was causing corrupt handles.
+		<release version="2.3" date="" min="2.3">
 			- General maintenance for Symphony 2.3.
+			- Added German translation.
+			- Fixed issue where text formatter was causing corrupt handles.
+			- Sorting is now done on `handle`, rather than `value` for a speed boost.
+			- Fix empty elements appearing in the XML
 		</release>
-		<release version="2.2" date="2011-04-11" min="2.2">
-			- Fixed incorrect setting name for 'column_length'.
+		<release version="2.2" date="2011-04-11" min="2.2" max="2.2.5">
+			- Fixed incorrect setting name for `column_length`.
 			- Fixed issue causing JavaScript to be executed on the wrong page.
 			- Don't rely on MySQL to create tables with the MyISAM, do it ourself.
 		</release>
