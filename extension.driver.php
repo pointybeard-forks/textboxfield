@@ -175,13 +175,59 @@
 				$this->updateAddColumn('text_handle', "ENUM('yes', 'no') DEFAULT 'no' AFTER `text_cdata`");
 			}
 
+			// Add handle index to textbox entry tables:
+			require_once TOOLKIT . '/class.fieldmanager.php';
+			$textbox_fields = FieldManager::fetch(null, null, 'ASC', 'sortorder', 'textbox');
+			foreach($textbox_fields as $field) {
+				$table = "tbl_entries_data_" . $field->get('id');
+				if(!$this->updateHasIndex('handle', $table)) {
+					$this->updateAddIndex('handle', $table);
+				}
+			}
+
 			return true;
+		}
+
+		/**
+		 * Add a new Index. Note that this does not check to see if an
+		 * index already exists.
+		 *
+		 * @param string $index
+		 * @param string $table
+		 * @return boolean
+		 */
+		public function updateAddIndex($index, $table) {
+			return Symphony::Database()->query("
+				ALTER TABLE
+					`$table`
+				ADD INDEX
+					`{$index}` (`{$index}`)
+			");
+		}
+
+		/**
+		 * Check if the given `$table` has the `$index`.
+		 *
+		 * @param string $index
+		 * @param string $table
+		 * @return boolean
+		 */
+		public function updateHasIndex($index, $table) {
+			return (boolean)Symphony::Database()->fetchVar(
+				'Key_name', 0,
+				"
+					SHOW INDEX FROM
+						`$table`
+					WHERE
+						Key_name = '{$index}'
+				"
+			);
 		}
 
 		/**
 		 * Add a new column to the settings table.
 		 *
-		 * @param string $columm
+		 * @param string $column
 		 * @param string $type
 		 * @return boolean
 		 */

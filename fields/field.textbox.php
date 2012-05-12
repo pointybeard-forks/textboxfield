@@ -17,7 +17,7 @@
 	-------------------------------------------------------------------------*/
 
 		public function __construct() {
-			parent::__construct(Symphony::Engine());
+			parent::__construct();
 
 			$this->_name = 'Text Box';
 			$this->_required = true;
@@ -41,9 +41,10 @@
 					`word_count` INT(11) UNSIGNED DEFAULT NULL,
 					PRIMARY KEY (`id`),
 					KEY `entry_id` (`entry_id`),
+					KEY `handle` (`handle`),
 					FULLTEXT KEY `value` (`value`),
 					FULLTEXT KEY `value_formatted` (`value_formatted`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 			");
 		}
 
@@ -846,7 +847,7 @@
 						FROM tbl_entries_data_%d
 						WHERE entry_id = e.id
 					) %s',
-					'value',
+					'handle',
 					$this->get('id'),
 					$order
 				);
