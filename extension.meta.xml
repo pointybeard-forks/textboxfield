@@ -19,7 +19,7 @@
 			- Added German translation.
 			- Fixed issue where text formatter was causing corrupt handles.
 			- Sorting is now done on `handle`, rather than `value` for a speed boost.
-			- Fix empty elements appearing in the XML
+			- Fix empty elements appearing in the XML.
 		</release>
 		<release version="2.2" date="2011-04-11" min="2.2" max="2.2.5">
 			- Fixed incorrect setting name for `column_length`.
