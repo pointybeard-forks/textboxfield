@@ -24,7 +24,6 @@
 
 			// Set defaults:
 			$this->set('show_column', 'yes');
-			$this->set('size', 'medium');
 			$this->set('required', 'yes');
 		}
 
