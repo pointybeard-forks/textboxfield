@@ -489,7 +489,7 @@
 				return self::__INVALID_FIELDS__;
 			}
 
-			if ($length > 0 and $length < strlen($data)) {
+			if ($length > 0 and $length < mb_strlen($data, 'utf-8')) {
 				$message = __(
 					"'%s' must be no longer than %s characters.", array(
 						$this->get('label'),
