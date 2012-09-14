@@ -580,7 +580,7 @@
 		}
 
 		public function prepareTableValue($data, XMLElement $link = null) {
-			if (empty($data) or strlen(trim($data['value'])) == 0) return;
+			if (empty($data) or strlen(trim($data['value'])) == 0) $data['value'] = __('None');
 
 			$max_length = (integer)$this->get('column_length');
 			$max_length = ($max_length ? $max_length : 75);
