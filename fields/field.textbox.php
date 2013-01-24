@@ -134,10 +134,12 @@
 					WHERE
 						f.entry_id = '%s'
 						AND f.value = '%s'
+						AND f.handle = '%s'
 					LIMIT 1
 				",
 				$this->get('id'), $entry_id,
-				$this->cleanValue(General::sanitize($value))
+				$this->cleanValue(General::sanitize($value)),
+				$this->cleanValue(General::sanitize($handle))
 			));
 		}
 
