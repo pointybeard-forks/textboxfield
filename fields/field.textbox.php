@@ -6,13 +6,15 @@
 
 	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
 
-	require_once(TOOLKIT . '/class.xsltprocess.php');
-	require_once(EXTENSIONS . '/textboxfield/extension.driver.php');
+	require_once TOOLKIT . '/class.xsltprocess.php';
+	require_once EXTENSIONS . '/textboxfield/extension.driver.php';
+	require_once FACE . '/interface.exportablefield.php';
+	require_once FACE . '/interface.importablefield.php';
 
 	/**
 	 * An enhanced text input field.
 	 */
-	class FieldTextBox extends Field {
+	class FieldTextBox extends Field implements ExportableField, ImportableField {
 	/*-------------------------------------------------------------------------
 		Definition:
 	-------------------------------------------------------------------------*/
@@ -618,8 +620,96 @@
 		}
 
 	/*-------------------------------------------------------------------------
+		Import:
+	-------------------------------------------------------------------------*/
+
+		public function getImportModes() {
+			return array(
+				'getValue' =>		ImportableField::STRING_VALUE,
+				'getPostdata' =>	ImportableField::ARRAY_VALUE
+			);
+		}
+
+		public function prepareImportValue($data, $mode, $entry_id = null) {
+			$message = $status = null;
+			$modes = (object)$this->getImportModes();
+
+			if($mode === $modes->getValue) {
+				return $data;
+			}
+			else if($mode === $modes->getPostdata) {
+				return $this->processRawFieldData($data, $status, $message, true, $entry_id);
+			}
+
+			return null;
+		}
+
+	/*-------------------------------------------------------------------------
+		Export:
+	-------------------------------------------------------------------------*/
+
+		/**
+		 * Return a list of supported export modes for use with `prepareExportValue`.
+		 *
+		 * @return array
+		 */
+		public function getExportModes() {
+			return array(
+				'getHandle' =>		ExportableField::HANDLE,
+				'getFormatted' =>	ExportableField::FORMATTED,
+				'getUnformatted' =>	ExportableField::UNFORMATTED,
+				'getPostdata' =>	ExportableField::POSTDATA
+			);
+		}
+
+		/**
+		 * Give the field some data and ask it to return a value using one of many
+		 * possible modes.
+		 *
+		 * @param mixed $data
+		 * @param integer $mode
+		 * @param integer $entry_id
+		 * @return string|null
+		 */
+		public function prepareExportValue($data, $mode, $entry_id = null) {
+			$modes = (object)$this->getExportModes();
+
+			// Export handles:
+			if ($mode === $modes->getHandle) {
+				if (isset($data['handle'])) {
+					return $data['handle'];
+				}
+
+				else if (isset($data['value'])) {
+					return General::createHandle($data['value']);
+				}
+			}
+
+			// Export unformatted:
+			else if ($mode === $modes->getUnformatted || $mode === $modes->getPostdata) {
+				return isset($data['value'])
+					? $data['value']
+					: null;
+			}
+
+			// Export formatted:
+			else if ($mode === $modes->getFormatted) {
+				if (isset($data['value_formatted'])) {
+					return $data['value_formatted'];
+				}
+
+				else if (isset($data['value'])) {
+					return General::sanitize($data['value']);
+				}
+			}
+
+			return null;
+		}
+
+	/*-------------------------------------------------------------------------
 		Filtering:
 	-------------------------------------------------------------------------*/
+
 		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
 			Extension_TextBoxField::appendHeaders(
 				Extension_TextBoxField::FILTER_HEADERS
