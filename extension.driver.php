@@ -24,11 +24,6 @@
 		const FILTER_HEADERS = 2;
 
 		/**
-		 * Publish settings page headers.
-		 */
-		const SETTING_HEADERS = 4;
-
-		/**
 		 * What headers have been appended?
 		 *
 		 * @var integer
@@ -57,26 +52,8 @@
 					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.js', null, false);
 				}
 
-				if ($type === self::SETTING_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.settings.css', 'screen', null, false);
-				}
-
 				self::$appendedHeaders &= $type;
 			}
-		}
-
-		/**
-		 * Cleanup installation.
-		 *
-		 * @return boolean
-		 */
-		public function uninstall() {
-			Symphony::Database()->query(sprintf(
-				"DROP TABLE `%s`",
-				self::FIELD_TABLE
-			));
-
-			return true;
 		}
 
 		/**
@@ -106,13 +83,27 @@
 		}
 
 		/**
+		 * Cleanup installation.
+		 *
+		 * @return boolean
+		 */
+		public function uninstall() {
+			Symphony::Database()->query(sprintf(
+				"DROP TABLE `%s`",
+				self::FIELD_TABLE
+			));
+
+			return true;
+		}
+
+		/**
 		 * Update extension from previous releases.
 		 *
 		 * @see toolkit.ExtensionManager#update()
 		 * @param string $previousVersion
 		 * @return boolean
 		 */
-		public function update($previousVersion) {
+		public function update($previousVersion=false) {
 			// Column length:
 			if ($this->updateHasColumn('show_full')) {
 				$this->updateRemoveColumn('show_full');

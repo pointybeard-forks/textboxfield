@@ -83,7 +83,7 @@
 				else {
 					$count = 2;
 
- 					while ($this->isHandleLocked("{$handle}-{$count}", $entry_id)) $count++;
+					while ($this->isHandleLocked("{$handle}-{$count}", $entry_id)) $count++;
 
 					return "{$handle}-{$count}";
 				}
@@ -151,19 +151,15 @@
 		Settings:
 	-------------------------------------------------------------------------*/
 
-		public function findDefaults(&$fields) {
-			$fields['column_length'] = 75;
-			$fields['text_size'] = 'medium';
-			$fields['text_length'] = 0;
-			$fields['text_handle'] = 'yes';
-			$fields['text_cdata'] = 'no';
+		public function findDefaults(array &$settings) {
+			$settings['column_length'] = 75;
+			$settings['text_size'] = 'medium';
+			$settings['text_length'] = 0;
+			$settings['text_handle'] = 'yes';
+			$settings['text_cdata'] = 'no';
 		}
 
-		public function displaySettingsPanel(&$wrapper, $errors = null) {
-			Extension_TextBoxField::appendHeaders(
-				Extension_TextBoxField::SETTING_HEADERS
-			);
-
+		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null) {
 			parent::displaySettingsPanel($wrapper, $errors);
 
 			$order = $this->get('sortorder');
@@ -172,8 +168,8 @@
 			Expression
 		---------------------------------------------------------------------*/
 
-			$group = new XMLElement('div');
-			$group->setAttribute('class', 'group');
+			$columns = new XMLElement('div');
+			$columns->setAttribute('class', 'two columns');
 
 			$values = array(
 				array('single', false, __('Single Line')),
@@ -188,23 +184,24 @@
 			}
 
 			$label = Widget::Label('Size');
+			$label->setAttribute('class', 'column');
 			$label->appendChild(Widget::Select(
 				"fields[{$order}][text_size]", $values
 			));
 
-			$group->appendChild($label);
+			$columns->appendChild($label);
 
 		/*---------------------------------------------------------------------
 			Text Formatter
 		---------------------------------------------------------------------*/
 
-			$group->appendChild($this->buildFormatterSelect(
+			$columns->appendChild($this->buildFormatterSelect(
 				$this->get('text_formatter'),
 				"fields[{$order}][text_formatter]",
 				'Text Formatter'
 			));
-			$wrapper->appendChild($group);
 
+			$wrapper->appendChild($columns);
 		/*---------------------------------------------------------------------
 			Validator
 		---------------------------------------------------------------------*/
@@ -219,8 +216,8 @@
 			Limiting
 		---------------------------------------------------------------------*/
 
-			$group = new XMLElement('div');
-			$group->setAttribute('class', 'group');
+			$columns = new XMLElement('div');
+			$columns->setAttribute('class', 'two columns');
 
 			$input = Widget::Input(
 				"fields[{$order}][text_length]",
@@ -228,11 +225,14 @@
 			);
 			$input->setAttribute('size', '3');
 
-			$group->appendChild(Widget::Label(
+			$label = Widget::Label(
 				__('Limit input to %s characters', array(
 					$input->generate()
 				))
-			));
+			);
+			$label->setAttribute('class', 'column');
+
+			$columns->appendChild($label);
 
 		/*---------------------------------------------------------------------
 			Show characters
@@ -244,26 +244,29 @@
 			);
 			$input->setAttribute('size', '3');
 
-			$group->appendChild(Widget::Label(
+			$label = Widget::Label(
 				__('Show %s characters in preview', array(
 					$input->generate()
 				))
-			));
-			$wrapper->appendChild($group);
+			);
+
+			$label->setAttribute('class', 'column');
+
+			$columns->appendChild($label);
+			$wrapper->appendChild($columns);
 
 		/*---------------------------------------------------------------------
 			Options
 		---------------------------------------------------------------------*/
 
-			$list = new XMLElement('ul');
-			$list->setAttribute('class', 'options-list');
+			$columns = new XMLElement('div');
+			$columns->setAttribute('class', 'two columns');
 
-			$item = new XMLElement('li');
 			$input = Widget::Input(
 				"fields[{$order}][text_handle]",
 				'no', 'hidden'
 			);
-			$item->appendChild($input);
+			$columns->appendChild($input);
 
 			$input = Widget::Input(
 				"fields[{$order}][text_handle]",
@@ -274,19 +277,19 @@
 				$input->setAttribute('checked', 'checked');
 			}
 
-			$item->appendChild(Widget::Label(
+			$label = Widget::Label(
 				__('%s Output with handles', array(
 					$input->generate()
 				))
-			));
-			$list->appendChild($item);
+			);
+			$label->setAttribute('class', 'column');
+			$columns->appendChild($label);
 
-			$item = new XMLElement('li');
 			$input = Widget::Input(
 				"fields[{$order}][text_cdata]",
 				'no', 'hidden'
 			);
-			$item->appendChild($input);
+			$columns->appendChild($input);
 
 			$input = Widget::Input(
 				"fields[{$order}][text_cdata]",
@@ -297,30 +300,31 @@
 				$input->setAttribute('checked', 'checked');
 			}
 
-			$item->appendChild(Widget::Label(
+			$label = Widget::Label(
 				__('%s Output as CDATA', array(
 					$input->generate()
 				))
-			));
-			$list->appendChild($item);
+			);
+			$label->setAttribute('class', 'column');
+			$columns->appendChild($label);
 
-			$item = new XMLElement('li');
-			$this->appendRequiredCheckbox($item);
-			$list->appendChild($item);
+			$wrapper->appendChild($columns);
 
-			$item = new XMLElement('li');
-			$this->appendShowColumnCheckbox($item);
-			$list->appendChild($item);
+		/*---------------------------------------------------------------------
+			Core options
+		---------------------------------------------------------------------*/
 
-			$wrapper->appendChild($list);
-			$wrapper->setAttribute('class', $wrapper->getAttribute('class') . ' field-textbox');
+			$columns = new XMLElement('div');
+			$columns->setAttribute('class','two columns');
+			$this->appendRequiredCheckbox($columns);
+			$this->appendShowColumnCheckbox($columns);
+			$wrapper->appendChild($columns);
 		}
 
-		public function commit($propogate = null) {
+		public function commit() {
 			if (!parent::commit()) return false;
 
 			$id = $this->get('id');
-			$handle = $this->handle();
 
 			if ($id === false) return false;
 
@@ -335,22 +339,14 @@
 				'text_handle'		=> $this->get('text_handle')
 			);
 
-			Symphony::Database()->query("
-				DELETE FROM
-					`tbl_fields_{$handle}`
-				WHERE
-					`field_id` = '{$id}'
-				LIMIT 1
-			");
-
-			return Symphony::Database()->insert($fields, "tbl_fields_{$handle}");
+			return FieldManager::saveSettings($id, $fields);
 		}
 
 	/*-------------------------------------------------------------------------
 		Publish:
 	-------------------------------------------------------------------------*/
 
-		public function displayPublishPanel(&$wrapper, $data = null, $error = null, $prefix = null, $postfix = null) {
+		public function displayPublishPanel(XMLElement &$wrapper, $data = null, $flagWithError = null, $fieldnamePrefix = null, $fieldnamePostfix = null, $entry_id = null) {
 			Extension_TextBoxField::appendHeaders(
 				Extension_TextBoxField::PUBLISH_HEADERS
 			);
@@ -383,7 +379,7 @@
 			// Input box:
 			if ($this->get('text_size') == 'single') {
 				$input = Widget::Input(
-					"fields{$prefix}[$element_name]{$postfix}", General::sanitize($data['value'])
+					"fields{$fieldnamePrefix}[$element_name]{$fieldnamePostfix}", General::sanitize($data['value'])
 				);
 
 				###
@@ -395,7 +391,7 @@
 			// Text Box:
 			else {
 				$input = Widget::Textarea(
-					"fields{$prefix}[$element_name]{$postfix}", 20, 50, General::sanitize($data['value'])
+					"fields{$fieldnamePrefix}[$element_name]{$fieldnamePostfix}", 20, 50, General::sanitize($data['value'])
 				);
 
 				###
@@ -428,8 +424,8 @@
 
 			$label->appendChild($input);
 
-			if ($error != null) {
-				$label = Widget::wrapFormElementWithError($label, $error);
+			if ($flagWithError != null) {
+				$label = Widget::Error($label, $flagWithError);
 			}
 
 			$wrapper->appendChild($label);
@@ -441,19 +437,11 @@
 
 		public function applyFormatting($data) {
 			if ($this->get('text_formatter') != 'none') {
-				if (isset($this->_ParentCatalogue['entrymanager'])) {
-					$tfm = $this->_ParentCatalogue['entrymanager']->formatterManager;
-				}
-
-				else {
-					$tfm = new TextformatterManager(Symphony::Engine());
-				}
-
-				$formatter = $tfm->create($this->get('text_formatter'));
+				$formatter = TextformatterManager::create($this->get('text_formatter'));
 				$formatted = $formatter->run($data);
-			 	$formatted = preg_replace('/&(?![a-z]{0,4}\w{2,3};|#[x0-9a-f]{2,6};)/i', '&amp;', $formatted);
+				$formatted = preg_replace('/&(?![a-z]{0,4}\w{2,3};|#[x0-9a-f]{2,6};)/i', '&amp;', $formatted);
 
-			 	return $formatted;
+				return $formatted;
 			}
 
 			return General::sanitize($data);
@@ -492,22 +480,13 @@
 			}
 
 			// get data length
-
-			if (function_exists('mb_strlen')) {
-
+			$length_data = function_exists('mb_strlen')
 				// use mb function for better utf8-support where possible
-
-				$length_data = mb_strlen($data, 'utf-8');
-
-			} else {
-
+				? mb_strlen($data, 'utf-8')
 				// fallback for shitty server configurations
-
-				$length_data = strlen($data);
-			}
+				: strlen($data);
 
 			// check data length
-
 			if ($length > 0 and $length < $length_data) {
 				$message = __(
 					"'%s' must be no longer than %s characters.", array(
@@ -558,7 +537,7 @@
 			);
 		}
 
-		public function appendFormattedElement(&$wrapper, $data, $encode = false, $mode = null) {
+		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = null, $entry_id = null) {
 			if(is_null($data['value'])) return;
 
 			if ($mode == 'unformatted') {
@@ -598,7 +577,7 @@
 			));
 		}
 
-		public function prepareTableValue($data, XMLElement $link = null) {
+		public function prepareTableValue($data, XMLElement $link = null, $entry_id = null) {
 			if (empty($data) or strlen(trim($data['value'])) == 0) $data['value'] = __('None');
 
 			$max_length = (integer)$this->get('column_length');
@@ -630,7 +609,7 @@
 			return $value;
 		}
 
-		public function getParameterPoolValue($data) {
+		public function getParameterPoolValue(array $data, $entry_id=NULL){
 			if ($this->get('text_handle') != 'yes') {
 				return $data['value'];
 			}
@@ -641,8 +620,7 @@
 	/*-------------------------------------------------------------------------
 		Filtering:
 	-------------------------------------------------------------------------*/
-
-		public function displayDatasourceFilterPanel(&$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
+		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
 			Extension_TextBoxField::appendHeaders(
 				Extension_TextBoxField::FILTER_HEADERS
 			);
@@ -729,26 +707,11 @@
 			$wrapper->appendChild($help);
 		}
 
-		public function buildDSRetrivalSQL($data, &$joins, &$where, $andOperation = false) {
+		public function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation = false) {
 			$field_id = $this->get('id');
 
-			if (preg_match('/^(not-)?regexp:\s*/', $data[0], $matches)) {
-				$data = trim(array_pop(explode(':', $data[0], 2)));
-				$negate = ($matches[1] == '' ? '' : 'NOT');
-
-				$data = $this->cleanValue($data);
-				$this->_key++;
-				$joins .= "
-					LEFT JOIN
-						`tbl_entries_data_{$field_id}` AS t{$field_id}_{$this->_key}
-						ON (e.id = t{$field_id}_{$this->_key}.entry_id)
-				";
-				$where .= "
-					AND {$negate}(
-						t{$field_id}_{$this->_key}.handle REGEXP '{$data}'
-						OR t{$field_id}_{$this->_key}.value REGEXP '{$data}'
-					)
-				";
+			if (self::isFilterRegex($data[0])) {
+				$this->buildRegexSQL($data[0], array('value', 'handle'), $joins, $where);
 			}
 
 			else if (preg_match('/^(not-)?boolean:\s*/', $data[0], $matches)) {
@@ -863,10 +826,10 @@
 				$sort = sprintf('
 					ORDER BY (
 						SELECT %s
-						FROM tbl_entries_data_%d
+						FROM tbl_entries_data_%d AS `ed`
 						WHERE entry_id = e.id
 					) %s',
-					'handle',
+					'`ed`.handle',
 					$this->get('id'),
 					$order
 				);
