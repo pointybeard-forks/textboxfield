@@ -48,17 +48,17 @@
 				$page = Administration::instance()->Page;
 
 				if ($type === self::PUBLISH_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.css', 'screen');
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.js');
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.css', 'screen', null, false);
+					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.js', null, false);
 				}
 
 				if ($type === self::FILTER_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.css', 'screen');
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.js');
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.css', 'screen', null, false);
+					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.js', null, false);
 				}
 
 				if ($type === self::SETTING_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.settings.css', 'screen');
+					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.settings.css', 'screen', null, false);
 				}
 
 				self::$appendedHeaders &= $type;

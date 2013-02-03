@@ -19,10 +19,10 @@
 
 				optional
 					.text(message.replace('$1', remaining).replace('$2', limit))
-					.removeClass('invalid');
+					.removeClass('limit-reached');
 
 				if (remaining < 0) {
-					optional.addClass('invalid');
+					optional.addClass('limit-reached');
 				}
 			};
 

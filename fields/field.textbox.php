@@ -491,7 +491,24 @@
 				return self::__INVALID_FIELDS__;
 			}
 
-			if ($length > 0 and $length < strlen($data)) {
+			// get data length
+
+			if (function_exists('mb_strlen')) {
+
+				// use mb function for better utf8-support where possible
+
+				$length_data = mb_strlen($data, 'utf-8');
+
+			} else {
+
+				// fallback for shitty server configurations
+
+				$length_data = strlen($data);
+			}
+
+			// check data length
+
+			if ($length > 0 and $length < $length_data) {
 				$message = __(
 					"'%s' must be no longer than %s characters.", array(
 						$this->get('label'),
