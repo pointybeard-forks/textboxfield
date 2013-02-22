@@ -198,7 +198,7 @@
 			$columns->appendChild($this->buildFormatterSelect(
 				$this->get('text_formatter'),
 				"fields[{$order}][text_formatter]",
-				'Text Formatter'
+				__('Text Formatter')
 			));
 
 			$wrapper->appendChild($columns);
