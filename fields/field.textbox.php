@@ -857,7 +857,8 @@
 				if (!isset($groups[$element][$value])) {
 					$groups[$element][$value] = array(
 						'attr'		=> array(
-							'handle'	=> $handle //output only the first unique handle found
+							'handle'	=> $handle, //output only the first unique handle found
+							'value'		=> $value	//ouput the value used to group entry
 						),
 						'records'	=> array(),
 						'groups'	=> array()
