@@ -944,17 +944,18 @@
 				$handle = $data['handle'];
 				$element = $this->get('element_name');
 
-				if (!isset($groups[$element][$handle])) {
-					$groups[$element][$handle] = array(
+				if (!isset($groups[$element][$value])) {
+					$groups[$element][$value] = array(
 						'attr'		=> array(
-							'handle'	=> $handle
+							'handle'	=> $handle, //output only the first unique handle found
+							'value'		=> $value	//ouput the value used to group entry
 						),
 						'records'	=> array(),
 						'groups'	=> array()
 					);
 				}
 
-				$groups[$element][$handle]['records'][] = $record;
+				$groups[$element][$value]['records'][] = $record;
 			}
 
 			return $groups;
