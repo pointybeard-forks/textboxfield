@@ -14,8 +14,10 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="2.3.2" date="unreleased" min="2.3.2">
+		<release version="2.3.2" date="2013-06-04" min="2.3.2">
 			- Add support for `ImportableField` and `ExportableField` interfaces
+			- Fix grouping output for field. Thanks @PascalPiche
+			- Improve localisation. Thanks @jurajkapsz
 		</release>
 		<release version="2.3.1" date="2013-02-03" min="2.3">
 			- General cleanup of Field to align closer with the core implementations.
