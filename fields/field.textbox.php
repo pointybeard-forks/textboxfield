@@ -458,8 +458,9 @@
 		public function checkPostFieldData($data, &$message, $entry_id = null) {
 			$length = (integer)$this->get('text_length');
 			$message = null;
+			$data = trim($data);
 
-			if ($this->get('required') == 'yes' and strlen(trim($data)) == 0) {
+			if ($this->get('required') == 'yes' and strlen($data) == 0) {
 				$message = __(
 					"'%s' is a required field.", array(
 						$this->get('label')
@@ -580,26 +581,29 @@
 		}
 
 		public function prepareTableValue($data, XMLElement $link = null, $entry_id = null) {
-			if (empty($data) or strlen(trim($data['value'])) == 0) $data['value'] = __('None');
-
-			$max_length = (integer)$this->get('column_length');
-			$max_length = ($max_length ? $max_length : 75);
-
-			$value = strip_tags(
-				isset($data['value_formatted'])
-					? $data['value_formatted']
-					: $data['value']
-			);
-
-			if ($max_length < strlen($value)) {
-				$lines = explode("\n", wordwrap($value, $max_length - 1, "\n"));
-				$value = array_shift($lines);
-				$value = rtrim($value, "\n\t !?.,:;");
-				$value .= '...';
+			if (empty($data) or strlen(trim($data['value'])) == 0) {
+				$value = __('None');
 			}
+			else {
+				$max_length = (integer)$this->get('column_length');
+				$max_length = ($max_length ? $max_length : 75);
 
-			if ($max_length > 75) {
-				$value = wordwrap($value, 75, '<br />');
+				$value = strip_tags(
+					isset($data['value_formatted'])
+						? $data['value_formatted']
+						: $data['value']
+				);
+
+				if ($max_length < strlen($value)) {
+					$lines = explode("\n", wordwrap($value, $max_length - 1, "\n"));
+					$value = array_shift($lines);
+					$value = rtrim($value, "\n\t !?.,:;");
+					$value .= '...';
+				}
+
+				if ($max_length > 75) {
+					$value = wordwrap($value, 75, '<br />');
+				}
 			}
 
 			if ($link) {
