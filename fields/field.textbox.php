@@ -362,7 +362,7 @@
 
 			if ($this->get('required') != 'yes') {
 				if ((integer)$this->get('text_length') > 0) {
-					$optional = __('$1 of $2 remaining') . ' &ndash; ' . __('Optional');
+					$optional = __('$1 of $2 remaining') . ' &#8211; ' . __('Optional');
 				}
 
 				else {
