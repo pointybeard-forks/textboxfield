@@ -42,7 +42,7 @@
 					`value_formatted` TEXT DEFAULT NULL,
 					`word_count` INT(11) UNSIGNED DEFAULT NULL,
 					PRIMARY KEY (`id`),
-					KEY `entry_id` (`entry_id`),
+					UNIQUE KEY `entry_id` (`entry_id`),
 					KEY `handle` (`handle`),
 					FULLTEXT KEY `value` (`value`),
 					FULLTEXT KEY `value_formatted` (`value_formatted`)
