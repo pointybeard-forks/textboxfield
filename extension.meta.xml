@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="textboxfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="textboxfield" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
 	<name>Text Box</name>
 	<description>The Text Box field is a replacement for both the standard text input and textarea fields. It combines both to create a field that supports text formatting and validation rules.</description>
-	<repo type="github">https://github.com/rowan-lewis/textboxfield</repo>
-	<url type="discuss">http://symphony-cms.com/discuss/thread/387/</url>
+	<repo type="github">https://github.com/symphonists/textboxfield</repo>
+	<url type="discuss">http://getsymphony.com/discuss/thread/387/</url>
 	<types>
 		<type>Field Types</type>
 	</types>
 	<authors>
+		<author>
+			<name github="symphonists">Symphony Community</name>
+			<website>https://github.com/symphonists</website>
+		</author>
 		<author>
 			<name github="rowan-lewis" symphony="buzzomatic">Rowan Lewis</name>
 			<website>http://nbsp.io</website>
 		</author>
 	</authors>
 	<releases>
+		<release version="2.3.4" date="2014-04-02" min="2.3.2">
+			- Add unique constraint for `entry_id` column
+			- Fix empty value handling
+			- Replace named entity with numeric entity
+		</release>
 		<release version="2.3.3" date="2013-07-09" min="2.3.2">
 			- Add class to the filter prefixes on the DSE for Symphony 2.3.3 compatibility
 			- Add Polish translation. Thanks @idea07
