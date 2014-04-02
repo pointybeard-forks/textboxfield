@@ -460,25 +460,15 @@
 			$message = null;
 			$data = trim($data);
 
-			if ($this->get('required') == 'yes' and strlen($data) == 0) {
-				$message = __(
-					"'%s' is a required field.", array(
-						$this->get('label')
-					)
-				);
-
+			if ($this->get('required') == 'yes' && strlen(trim($data)) == 0) {
+				$message = __('‘%s’ is a required field.', array($this->get('label')));
 				return self::__MISSING_FIELDS__;
 			}
 
 			if (empty($data)) self::__OK__;
 
-			if (!$this->applyValidationRules($data)) {
-				$message = __(
-					"'%s' contains invalid data. Please check the contents.", array(
-						$this->get('label')
-					)
-				);
-
+			if (!$this->__applyValidationRules($data)) {
+				$message = __('‘%s’ contains invalid data. Please check the contents.', array($this->get('label')));
 				return self::__INVALID_FIELDS__;
 			}
 
@@ -661,6 +651,7 @@
 			return array(
 				'getHandle' =>		ExportableField::HANDLE,
 				'getFormatted' =>	ExportableField::FORMATTED,
+				'getFormatted' =>	ExportableField::VALUE,
 				'getUnformatted' =>	ExportableField::UNFORMATTED,
 				'getPostdata' =>	ExportableField::POSTDATA
 			);
