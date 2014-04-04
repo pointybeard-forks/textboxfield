@@ -467,7 +467,7 @@
 
 			if (empty($data)) self::__OK__;
 
-			if (!$this->__applyValidationRules($data)) {
+			if (!$this->applyValidationRules($data)) {
 				$message = __('‘%s’ contains invalid data. Please check the contents.', array($this->get('label')));
 				return self::__INVALID_FIELDS__;
 			}
