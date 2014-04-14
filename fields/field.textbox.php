@@ -316,11 +316,7 @@
 			Core options
 		---------------------------------------------------------------------*/
 
-			$columns = new XMLElement('div');
-			$columns->setAttribute('class','two columns');
-			$this->appendRequiredCheckbox($columns);
-			$this->appendShowColumnCheckbox($columns);
-			$wrapper->appendChild($columns);
+			$this->appendStatusFooter($wrapper);
 		}
 
 		public function commit() {
