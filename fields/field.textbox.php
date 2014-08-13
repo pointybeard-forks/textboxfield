@@ -439,10 +439,10 @@
 				$formatted = $formatter->run($data);
 				$formatted = preg_replace('/&(?![a-z]{0,4}\w{2,3};|#[x0-9a-f]{2,6};)/i', '&amp;', $formatted);
 
-				return $formatted;
+				return trim($formatted);
 			}
 
-			return General::sanitize($data);
+			return General::sanitize(trim($data));
 		}
 
 		public function applyValidationRules($data) {
@@ -507,7 +507,7 @@
 
 			$result = array(
 				'handle'			=> $this->createHandle($formatted, $entry_id),
-				'value'				=> (string)$data,
+				'value'				=> trim((string)$data),
 				'value_formatted'	=> $formatted,
 				'word_count'		=> General::countWords($data)
 			);
