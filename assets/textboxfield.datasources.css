@@ -4,7 +4,7 @@
 	margin: -1em 0 1.5em 0;
 	overflow: hidden;
 }
-.field-textbox.selected .filter-prefix-suggestions {
+.field-textbox.filter-selected .filter-prefix-suggestions {
 	color: #aabbee;
 }
 .field-textbox .filter-prefix-suggestions li {
@@ -12,12 +12,12 @@
 	float: left;
 }
 .field-textbox .filter-prefix-suggestions li:hover,
-.field-textbox .filter-prefix-suggestions li.selected {
+.field-textbox .filter-prefix-suggestions li.filter-selected {
 	background: transparent;
 	color: #444433;
 }
 .field-textbox.selected .filter-prefix-suggestions li:hover,
-.field-textbox.selected .filter-prefix-suggestions li.selected {
+.field-textbox.selected .filter-prefix-suggestions li.filter-selected {
 	color: #ffffff;
 }
 .field-textbox .filter-prefix-suggestions li:before {
@@ -30,7 +30,7 @@
 .field-textbox .filter-prefix-suggestions li:first-child:before {
 	content: '';
 }
-.field-textbox.selected p {
+.field-textbox.filter-selected p {
 	color: #aabbee;
 }
 .field-textbox p code {

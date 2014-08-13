@@ -63,7 +63,7 @@
 								var matched = current_match.exec(value)[0];
 
 								value = value.replace(current_match, '');
-								current_filter.removeClass('selected');
+								current_filter.removeClass('filter-selected');
 
 								if (selection_start < matched.length) {
 									selection_track = false;
@@ -110,12 +110,12 @@
 						if (match.test(value)) {
 							matched = true;
 
-							filter.addClass('selected');
+							filter.addClass('filter-selected');
 							widgets.help.html(filter.attr('alt'));
 						}
 
 						else {
-							filter.removeClass('selected');
+							filter.removeClass('filter-selected');
 						}
 					});
 
@@ -151,8 +151,7 @@
 
 	jQuery(document).ready(function() {
 		jQuery('.field-textbox').filterTextBox();
-
-		jQuery('#contents').on('click', '.filters-duplicator + .apply .constructor', function() {
+		jQuery('.filters-duplicator').on('click.duplicator', '.constructor:not(.disabled)', function() {
 			jQuery('.field-textbox:not(.initialised)').filterTextBox();
-		});
+		})
 	});
