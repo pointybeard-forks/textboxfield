@@ -648,7 +648,7 @@
 				'getHandle' =>		ExportableField::HANDLE,
 				'getFormatted' =>	ExportableField::FORMATTED,
 				'getFormatted' =>	ExportableField::VALUE,
-				'getUnformatted' =>	ExportableField::UNFORMATTED,
+				'getUnformatted' => ExportableField::UNFORMATTED,
 				'getPostdata' =>	ExportableField::POSTDATA
 			);
 		}
@@ -701,36 +701,36 @@
 		Filtering:
 	-------------------------------------------------------------------------*/
 
-		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null) {
-			Extension_TextBoxField::appendHeaders(
-				Extension_TextBoxField::FILTER_HEADERS
-			);
-			$field_id = $this->get('id');
-
-			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
-			$wrapper->setAttribute('class', $wrapper->getAttribute('class') . ' field-textbox');
-
-			$filters = array(
+		/**
+		 * Returns the keywords that this field supports for filtering. Note
+		 * that no filter will do a simple 'straight' match on the value.
+		 *
+		 * @since Symphony 2.6.0
+		 * @return array
+		 */
+		public function fetchFilterableOperators()
+		{
+			return array(
 				array(
-					'name'				=> 'boolean',
+					'title'				=> 'boolean',
 					'filter'			=> 'boolean:',
 					'help'				=> __('Find values that match the given query. Can use operators <code>and</code> and <code>not</code>.')
 				),
 				array(
-					'name'				=> 'not-boolean',
+					'title'				=> 'not-boolean',
 					'filter'			=> 'not-boolean:',
 					'help'				=> __('Find values that do not match the given query. Can use operators <code>and</code> and <code>not</code>.')
 				),
 
 				array(
-					'name'				=> 'regexp',
+					'title'				=> 'regexp',
 					'filter'			=> 'regexp:',
 					'help'				=> __('Find values that match the given <a href="%s">MySQL regular expressions</a>.', array(
 						'http://dev.mysql.com/doc/mysql/en/Regexp.html'
 					))
 				),
 				array(
-					'name'				=> 'not-regexp',
+					'title'				=> 'not-regexp',
 					'filter'			=> 'not-regexp:',
 					'help'				=> __('Find values that do not match the given <a href="%s">MySQL regular expressions</a>.', array(
 						'http://dev.mysql.com/doc/mysql/en/Regexp.html'
@@ -738,55 +738,38 @@
 				),
 
 				array(
-					'name'				=> 'contains',
+					'title'				=> 'contains',
 					'filter'			=> 'contains:',
 					'help'				=> __('Find values that contain the given string.')
 				),
 				array(
-					'name'				=> 'not-contains',
+					'title'				=> 'not-contains',
 					'filter'			=> 'not-contains:',
 					'help'				=> __('Find values that do not contain the given string.')
 				),
 
 				array(
-					'name'				=> 'starts-with',
+					'title'				=> 'starts-with',
 					'filter'			=> 'starts-with:',
 					'help'				=> __('Find values that start with the given string.')
 				),
 				array(
-					'name'				=> 'not-starts-with',
+					'title'				=> 'not-starts-with',
 					'filter'			=> 'not-starts-with:',
 					'help'				=> __('Find values that do not start with the given string.')
 				),
 
 				array(
-					'name'				=> 'ends-with',
+					'title'				=> 'ends-with',
 					'filter'			=> 'ends-with:',
 					'help'				=> __('Find values that end with the given string.')
 				),
 				array(
-					'name'				=> 'not-ends-with',
+					'title'				=> 'not-ends-with',
 					'filter'			=> 'not-ends-with:',
 					'help'				=> __('Find values that do not end with the given string.')
 				)
 			);
-
-			$list = new XMLElement('ul');
-			$list->setAttribute('class', 'filter-prefix-suggestions');
-
-			foreach ($filters as $value) {
-				$item = new XMLElement('li', $value['name']);
-				$item->setAttribute('title', $value['filter']);
-				$item->setAttribute('alt', General::sanitize($value['help']));
-				$list->appendChild($item);
-			}
-
-			$help = new XMLElement('p');
-			$help->setAttribute('class', 'help');
-			$help->setValue(__('Find values that are an exact match for the given string.'));
-
-			$wrapper->appendChild($list);
-			$wrapper->appendChild($help);
 		}
 
 		public function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation = false) {

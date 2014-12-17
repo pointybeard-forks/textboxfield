@@ -19,11 +19,6 @@
 		const PUBLISH_HEADERS = 1;
 
 		/**
-		 * Datasource filter page headers.
-		 */
-		const FILTER_HEADERS = 2;
-
-		/**
 		 * What headers have been appended?
 		 *
 		 * @var integer
@@ -45,11 +40,6 @@
 				if ($type === self::PUBLISH_HEADERS) {
 					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.css', 'screen', null, false);
 					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.js', null, false);
-				}
-
-				if ($type === self::FILTER_HEADERS) {
-					$page->addStylesheetToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.css', 'screen', null, false);
-					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.datasources.js', null, false);
 				}
 
 				self::$appendedHeaders &= $type;

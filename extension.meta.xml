@@ -18,6 +18,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.5.0" date="2014-12-17" min="2.6.x">
+			- Support for Symphony 2.6+
+		</release>
 		<release version="2.4.0" date="2014-08-13" min="2.4" max="2.5.x">
 			- Official support for Symphony 2.4+
 			- [#1](https://github.com/symphonists/textboxfield/issues/1) Trim and tidy empty values
