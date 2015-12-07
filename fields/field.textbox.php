@@ -146,7 +146,7 @@
 		}
 
 		protected function repairEntities($value) {
-			return preg_replace('/&(?!(#[0-9]+|#x[0-9a-f]+|amp|lt|gt);)/i', '&amp;', trim($value));
+			return preg_replace('/&(?!(#[0-9]+|#x[0-9a-f]+|amp|lt|gt|quot);)/i', '&amp;', trim($value));
 		}
 
 	/*-------------------------------------------------------------------------
