@@ -142,7 +142,7 @@
 			$textbox_fields = FieldManager::fetch(null, null, 'ASC', 'sortorder', 'textbox');
 			foreach($textbox_fields as $field) {
 				$table = "tbl_entries_data_" . $field->get('id');
-				if(!$this->updateHasIndex('handle', $table)) {
+				if ($this->updateHasColumn('text_handle', $table) && !$this->updateHasIndex('handle', $table)) {
 					$this->updateAddIndex('handle', $table);
 				}
 			}
