@@ -63,6 +63,7 @@
 					`text_length` INT(11) UNSIGNED DEFAULT 0,
 					`text_cdata` ENUM('yes', 'no') DEFAULT 'no',
 					`text_handle` ENUM('yes', 'no') DEFAULT 'no',
+					`handle_unique` ENUM('yes', 'no') DEFAULT 'yes',
 					PRIMARY KEY (`id`),
 					KEY `field_id` (`field_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
@@ -137,14 +138,20 @@
 				$this->updateAddColumn('text_handle', "ENUM('yes', 'no') DEFAULT 'no' AFTER `text_cdata`");
 			}
 
+			// is handle unique:
+			if (!$this->updateHasColumn('handle_unique')) {
+				$this->updateAddColumn('handle_unique', "ENUM('yes', 'no') NOT NULL DEFAULT 'yes' AFTER `text_handle`");
+			}
+
 			// Add handle index to textbox entry tables:
-			require_once TOOLKIT . '/class.fieldmanager.php';
 			$textbox_fields = FieldManager::fetch(null, null, 'ASC', 'sortorder', 'textbox');
 			foreach($textbox_fields as $field) {
 				$table = "tbl_entries_data_" . $field->get('id');
 				if ($this->updateHasColumn('text_handle', $table) && !$this->updateHasIndex('handle', $table)) {
 					$this->updateAddIndex('handle', $table);
 				}
+				// Handle length
+				$this->updateModifyColumn('handle', 'VARCHAR(1024)', $table);
 			}
 
 			return true;
@@ -198,6 +205,24 @@
 				ALTER TABLE
 					`%s`
 				ADD COLUMN
+					`{$column}` {$type}
+				",
+				$table
+			));
+		}
+
+		/**
+		 * Add a new column to the settings table.
+		 *
+		 * @param string $column
+		 * @param string $type
+		 * @return boolean
+		 */
+		public function updateModifyColumn($column, $type, $table = self::FIELD_TABLE) {
+			return Symphony::Database()->query(sprintf("
+				ALTER TABLE
+					`%s`
+				MODIFY COLUMN
 					`{$column}` {$type}
 				",
 				$table
