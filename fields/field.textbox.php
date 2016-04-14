@@ -78,8 +78,8 @@
 			$max_length = 1023;
 			$handle = Lang::createHandle(strip_tags(html_entity_decode($value)), $max_length);
 
-			if ($this->isHandleLocked($handle, $entry_id)) {
-				if ($this->get('handle_unique') === 'no' || $this->isHandleFresh($handle, $value, $entry_id)) {
+			if ($this->get('handle_unique') === 'yes' && $this->isHandleLocked($handle, $entry_id)) {
+				if ($this->isHandleFresh($handle, $value, $entry_id)) {
 					return $this->getCurrentHandle($entry_id);
 				} else {
 					$count = 1;
