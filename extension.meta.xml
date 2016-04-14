@@ -21,6 +21,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.7.0" date="2017-05-18" min="2.6.0" max="2.x.x">
+			- Give option to make handle unique or not (default to unique as was before)
+		</release>
 		<release version="2.6.2" date="2016-10-20" min="2.6.0" max="2.x.x">
 			- Fixed a bug where handles could be bigger than 255 chars
 		</release>
