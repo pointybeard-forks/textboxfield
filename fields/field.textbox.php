@@ -538,13 +538,8 @@
 				$value = trim($data['value_formatted']);
 			}
 
-			if ($mode == 'unformatted' or $this->get('text_cdata') == 'yes') {
-				$value = '<![CDATA[' . $value . ']]>';
-			}
-
-			// TODO: Remove this for 2.1 release.
-			else if ($encode) {
-				$value = General::sanitize($value);
+			if ($mode == 'unformatted' || $this->get('text_cdata') == 'yes') {
+				$value = General::wrapInCDATA($value);
 			}
 
 			else {
