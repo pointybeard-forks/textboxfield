@@ -768,8 +768,37 @@
 					'title'				=> 'not-ends-with',
 					'filter'			=> 'not-ends-with:',
 					'help'				=> __('Find values that do not end with the given string.')
-				)
+				),
+
+				array(
+					'title'				=> 'handle',
+					'filter'			=> 'handle:',
+					'help'				=> __('Find values by exact match of their handle representation only.')
+				),
+				array(
+					'title'				=> 'not-handle',
+					'filter'			=> 'not-handle:',
+					'help'				=> __('Find values by exact exclusion of their handle representation only.')
+				),
 			);
+		}
+
+		private static function replaceAnds($data) {
+			// Negative match?
+			if (preg_match('/^not(\W)/i', $data)) {
+				$mode = '-';
+
+			} else {
+				$mode = '+';
+			}
+
+			// Replace ' and ' with ' +':
+			$data = preg_replace('/(\W)and(\W)/i', '\\1+\\2', $data);
+			$data = preg_replace('/(^)and(\W)|(\W)and($)/i', '\\2\\3', $data);
+			$data = preg_replace('/(\W)not(\W)/i', '\\1-\\2', $data);
+			$data = preg_replace('/(^)not(\W)|(\W)not($)/i', '\\2\\3', $data);
+			$data = preg_replace('/([\+\-])\s*/', '\\1', $mode . $data);
+			return $data;
 		}
 
 		public function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation = false) {
@@ -785,21 +814,7 @@
 
 				if ($data == '') return true;
 
-				// Negative match?
-				if (preg_match('/^not(\W)/i', $data)) {
-					$mode = '-';
-
-				} else {
-					$mode = '+';
-				}
-
-				// Replace ' and ' with ' +':
-				$data = preg_replace('/(\W)and(\W)/i', '\\1+\\2', $data);
-				$data = preg_replace('/(^)and(\W)|(\W)and($)/i', '\\2\\3', $data);
-				$data = preg_replace('/(\W)not(\W)/i', '\\1-\\2', $data);
-				$data = preg_replace('/(^)not(\W)|(\W)not($)/i', '\\2\\3', $data);
-				$data = preg_replace('/([\+\-])\s*/', '\\1', $mode . $data);
-
+				$data = self::replaceAnds($data);
 				$data = $this->cleanValue($data);
 				$this->_key++;
 				$joins .= "
@@ -832,6 +847,25 @@
 						t{$field_id}_{$this->_key}.handle LIKE '{$data}'
 						OR t{$field_id}_{$this->_key}.value LIKE '{$data}'
 					)
+				";
+			}
+
+			else if (preg_match('/^(not-)?handle:\s*/', $data[0], $matches)) {
+				$data = trim(array_pop(explode(':', implode(' + ', $data), 2)));
+				$op = ($matches[1] == '' ? '=' : '!=');
+
+				if ($data == '') return true;
+
+				$data = self::replaceAnds($data);
+				$data = $this->cleanValue($data);
+				$this->_key++;
+				$joins .= "
+					LEFT JOIN
+						`tbl_entries_data_{$field_id}` AS t{$field_id}_{$this->_key}
+						ON (e.id = t{$field_id}_{$this->_key}.entry_id)
+				";
+				$where .= "
+					AND (t{$field_id}_{$this->_key}.handle {$op} '{$data}')
 				";
 			}
 
