@@ -779,6 +779,10 @@
 		}
 
 		private static function replaceAnds($data) {
+			if (!preg_match('/((\W)and)|(and(\W))/i', $data)) {
+				return $data;
+			}
+			
 			// Negative match?
 			if (preg_match('/^not(\W)/i', $data)) {
 				$mode = '-';
