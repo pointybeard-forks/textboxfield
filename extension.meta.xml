@@ -21,6 +21,10 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.6.0" date="2016-07-19" min="2.6.0" max="2.x.x">
+			- Added `handle:` and `not-handle:` filtering operators
+			- Fixed a bug in boolean mode and `and`'s
+		</release>
 		<release version="2.5.3" date="2016-03-17" min="2.6.0" max="2.x.x">
 			- Fix problem on update
 		</release>

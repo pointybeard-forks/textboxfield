@@ -5,6 +5,7 @@
  - Boolean searching with the `boolean` filter.
  - Regular expression searching with the `regexp` filter.
  - Partial searching with `starts-with`, `ends-with` and `contains` filters.
+ - Search against the handle value only with the `handle` filter.
  - The above filters can be negated by prefixing with `not-`.
  - Text formatter and validation rule support.
  - Output grouping on handle.
