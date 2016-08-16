@@ -42,7 +42,7 @@
 					$page->addScriptToHead(URL . '/extensions/textboxfield/assets/textboxfield.publish.js', null, false);
 				}
 
-				self::$appendedHeaders &= $type;
+				self::$appendedHeaders |= $type;
 			}
 		}
 
