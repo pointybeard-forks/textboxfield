@@ -21,6 +21,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.6.1" date="2016-09-13" min="2.6.0" max="2.x.x">
+			- Remove "and" replacing for handle mode
+		</release>
 		<release version="2.6.0" date="2016-07-19" min="2.6.0" max="2.x.x">
 			- Added `handle:` and `not-handle:` filtering operators
 			- Fixed a bug in boolean mode and `and`'s
