@@ -855,7 +855,6 @@
 
 				if ($data == '') return true;
 
-				$data = self::replaceAnds($data);
 				$data = $this->cleanValue($data);
 				$this->_key++;
 				$joins .= "
