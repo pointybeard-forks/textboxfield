@@ -75,19 +75,22 @@
 	-------------------------------------------------------------------------*/
 
 		public function createHandle($value, $entry_id) {
-			$handle = Lang::createHandle(strip_tags(html_entity_decode($value)));
+			$max_length = 255;
+			$handle = Lang::createHandle(strip_tags(html_entity_decode($value)), $max_length);
 
 			if ($this->isHandleLocked($handle, $entry_id)) {
 				if ($this->isHandleFresh($handle, $value, $entry_id)) {
 					return $this->getCurrentHandle($entry_id);
-				}
+				} else {
+					$count = 1;
 
-				else {
-					$count = 2;
+					do {
+						$count++;
+						$countString = "-{$count}";
+						$subHandle = trim(General::substr($handle, 0, $max_length - General::strlen($countString)), '-');
+					} while ($this->isHandleLocked("{$subHandle}-{$count}", $entry_id));
 
-					while ($this->isHandleLocked("{$handle}-{$count}", $entry_id)) $count++;
-
-					return "{$handle}-{$count}";
+					return "{$subHandle}-{$count}";
 				}
 			}
 
