@@ -97,7 +97,7 @@
 			return $handle;
 		}
 
-		public function getCurrentHandle($entry_id) {
+		public function getCurrentHandle($entry_id, $lc = null) {
 			return Symphony::Database()->fetchVar('handle', 0, sprintf(
 				"
 					SELECT
@@ -112,7 +112,7 @@
 			));
 		}
 
-		public function isHandleLocked($handle, $entry_id) {
+		public function isHandleLocked($handle, $entry_id, $lc = null) {
 			return (boolean)Symphony::Database()->fetchVar('id', 0, sprintf(
 				"
 					SELECT
@@ -129,7 +129,7 @@
 			));
 		}
 
-		public function isHandleFresh($handle, $value, $entry_id) {
+		public function isHandleFresh($handle, $value, $entry_id, $lc = null) {
 			return (boolean)Symphony::Database()->fetchVar('id', 0, sprintf(
 				"
 					SELECT
@@ -965,6 +965,11 @@
 				);
 			}
 		}
+
+        public function buildSortingSelectSQL($sort, $order = 'ASC')
+        {
+            return null;
+        }
 
 	/*-------------------------------------------------------------------------
 		Grouping:
