@@ -147,11 +147,16 @@
 			$textbox_fields = FieldManager::fetch(null, null, 'ASC', 'sortorder', 'textbox');
 			foreach($textbox_fields as $field) {
 				$table = "tbl_entries_data_" . $field->get('id');
+				// Make sure we have an index on the handle
 				if ($this->updateHasColumn('text_handle', $table) && !$this->updateHasIndex('handle', $table)) {
 					$this->updateAddIndex('handle', $table);
 				}
 				// Handle length
 				$this->updateModifyColumn('handle', 'VARCHAR(1024)', $table);
+				// Make sure we have a unique key on `entry_id`
+				if ($this->updateHasColumn('entry_id', $table) && !$this->updateHasUniqueKey('entry_id', $table)) {
+					$this->updateAddUniqueKey('entry_id', $table);
+				}
 			}
 
 			return true;
@@ -189,6 +194,55 @@
 						`$table`
 					WHERE
 						Key_name = '{$index}'
+				"
+			);
+		}
+
+		/**
+		 * Add a new Unique Key. Note that this does not check to see if an
+		 * unique key already exists and will remove any existing key on the column.
+		 *
+		 * @param string $column
+		 * @param string $table
+		 * @return boolean
+		 */
+		public function updateAddUniqueKey($column, $table = self::FIELD_TABLE) {
+			try {
+				Symphony::Database()->query("
+					ALTER TABLE
+						`$table`
+					DROP KEY
+						`$column`
+				");
+			} catch (Exception $ex) {
+				// ignore
+			}
+			return Symphony::Database()->query("
+				ALTER TABLE
+					`$table`
+				ADD UNIQUE KEY
+					`$column` (`$column`)
+			");
+		}
+
+		/**
+		 * Check if the given `$table` has a unique key on `$column`.
+		 *
+		 * @param string $column
+		 * @param string $table
+		 * @return boolean
+		 */
+		public function updateHasUniqueKey($column, $table = self::FIELD_TABLE) {
+			$db = Symphony::Configuration()->get('database', 'db');
+			return (boolean)Symphony::Database()->fetchVar(
+				'CONSTRAINT_NAME', 0,
+				"
+					SELECT DISTINCT CONSTRAINT_NAME
+					FROM information_schema.TABLE_CONSTRAINTS
+					WHERE CONSTRAINT_SCHEMA = '$db' AND
+						CONSTRAINT_NAME = '$column' AND
+						table_name = '$table' AND
+						constraint_type = 'UNIQUE';
 				"
 			);
 		}
