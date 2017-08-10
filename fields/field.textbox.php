@@ -43,7 +43,7 @@
 					`word_count` INT(11) UNSIGNED DEFAULT NULL,
 					PRIMARY KEY (`id`),
 					UNIQUE KEY `entry_id` (`entry_id`),
-					KEY `handle` (`handle`),
+					INDEX `handle` (`handle`(333)),
 					FULLTEXT KEY `value` (`value`),
 					FULLTEXT KEY `value_formatted` (`value_formatted`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

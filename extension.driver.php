@@ -149,7 +149,7 @@
 				$table = "tbl_entries_data_" . $field->get('id');
 				// Make sure we have an index on the handle
 				if ($this->updateHasColumn('text_handle', $table) && !$this->updateHasIndex('handle', $table)) {
-					$this->updateAddIndex('handle', $table);
+					$this->updateAddIndex('handle', $table, 333);
 				}
 				// Handle length
 				$this->updateModifyColumn('handle', 'VARCHAR(1024)', $table);
@@ -170,12 +170,16 @@
 		 * @param string $table
 		 * @return boolean
 		 */
-		public function updateAddIndex($index, $table) {
+		public function updateAddIndex($index, $table, $limit = null) {
+			$col = "`{$index}`";
+			if ($limit) {
+				$col .= '(' . General::intval($limit) . ')';
+			}
 			return Symphony::Database()->query("
 				ALTER TABLE
 					`$table`
 				ADD INDEX
-					`{$index}` (`{$index}`)
+					`{$index}` ($col)
 			");
 		}
 
