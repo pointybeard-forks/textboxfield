@@ -531,6 +531,11 @@
 
 		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null) {
 			$status = self::__OK__;
+
+			if (strlen(trim($data)) == 0) {
+				return array();
+			}
+
 			$formatted = $this->applyFormatting($data);
 
 			$result = array(
@@ -810,7 +815,7 @@
 			if (!preg_match('/((\W)and)|(and(\W))/i', $data)) {
 				return $data;
 			}
-			
+
 			// Negative match?
 			if (preg_match('/^not(\W)/i', $data)) {
 				$mode = '-';

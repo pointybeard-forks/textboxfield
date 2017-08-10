@@ -21,6 +21,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.7.1" date="2017-08-10" min="2.6.0" max="2.x.x">
+			- Catch empty field data (prevents empty database rows)
+		</release>
 		<release version="2.7.0" date="2017-05-18" min="2.6.0" max="2.x.x">
 			- Give option to make handle unique or not (default to unique as was before)
 			- Make sure all entries table always have a UNIQUE KEY on the `entry_id` column
