@@ -74,7 +74,7 @@
 		Utilities:
 	-------------------------------------------------------------------------*/
 
-		public function createHandle($value, $entry_id) {
+		public function createHandle($value, $entry_id, $lc = null) {
 			$max_length = 1023;
 			$handle = Lang::createHandle(strip_tags(html_entity_decode($value)), $max_length);
 
