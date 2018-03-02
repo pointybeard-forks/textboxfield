@@ -808,6 +808,17 @@
 					'filter'			=> 'not-handle:',
 					'help'				=> __('Find values by exact exclusion of their handle representation only.')
 				),
+
+				array(
+					'filter'			=> 'sql: NOT NULL',
+					'title'				=> 'is not empty',
+					'help'				=> __('Find entries with a non-empty value.')
+				),
+				array(
+					'filter'			=> 'sql: NULL',
+					'title'				=> 'is empty',
+					'help'				=> __('Find entries with an empty value.')
+				),
 			);
 		}
 
@@ -838,6 +849,10 @@
 
 			if (self::isFilterRegex($data[0])) {
 				$this->buildRegexSQL($data[0], array('value', 'handle'), $joins, $where);
+			}
+
+			if (self::isFilterSQL($data[0])) {
+				$this->buildFilterSQL($data[0], array('value', 'handle'), $joins, $where);
 			}
 
 			else if (preg_match('/^(not-)?boolean:\s*/', $data[0], $matches)) {
