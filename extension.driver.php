@@ -31,7 +31,7 @@
 		static public function appendHeaders($type) {
 			if (
 				(self::$appendedHeaders & $type) !== $type
-				&& class_exists('Administration')
+				&& class_exists('Administration', false)
 				&& Administration::instance() instanceof Administration
 				&& Administration::instance()->Page instanceof HTMLPage
 			) {
