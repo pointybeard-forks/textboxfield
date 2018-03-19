@@ -148,7 +148,7 @@
 			foreach($textbox_fields as $field) {
 				$table = "tbl_entries_data_" . $field->get('id');
 				// Make sure we have an index on the handle
-				if ($this->updateHasColumn('text_handle', $table) && !$this->updateHasIndex('handle', $table)) {
+				if ($this->updateHasColumn('text_handle') && !$this->updateHasIndex('handle', $table)) {
 					$this->updateAddIndex('handle', $table, 333);
 				}
 				// Handle length
