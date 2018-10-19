@@ -851,7 +851,7 @@
 				$this->buildRegexSQL($data[0], array('value', 'handle'), $joins, $where);
 			}
 
-			if (self::isFilterSQL($data[0])) {
+			else if (self::isFilterSQL($data[0])) {
 				$this->buildFilterSQL($data[0], array('value', 'handle'), $joins, $where);
 			}
 
