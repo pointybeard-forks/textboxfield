@@ -3,7 +3,7 @@
 	<name>Text Box</name>
 	<description>The Text Box field is a replacement for both the standard text input and textarea fields. It combines both to create a field that supports text formatting and validation rules.</description>
 	<repo type="github">https://github.com/symphonists/textboxfield</repo>
-	<url type="discuss">http://www.getsymphony.com/discuss/thread/387/</url>
+	<url type="discuss">https://www.getsymphony.com/discuss/thread/387/</url>
 	<types>
 		<type>Field Types</type>
 		<type>Field</type>
@@ -21,6 +21,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.8.2" date="2018-10-19" min="2.7.0" max="4.x.x" php-min="5.6.x" php-max="7.x.x">
+			- Fix broken regexp: filters
+		</release>
 		<release version="2.8.1" date="2018-03-19" min="2.7.0" max="4.x.x" php-min="5.6.x" php-max="7.x.x">
 			- Check the right table for the `text_handle` column
 		</release>
