@@ -147,12 +147,18 @@
 			$textbox_fields = FieldManager::fetch(null, null, 'ASC', 'sortorder', 'textbox');
 			foreach($textbox_fields as $field) {
 				$table = "tbl_entries_data_" . $field->get('id');
+
+				// Handle length
+				if ($this->updateHasIndex('handle', $table)) {
+					$this->updateDropIndex('handle', $table);
+				}
+				$this->updateModifyColumn('handle', 'VARCHAR(1024)', $table);
+
 				// Make sure we have an index on the handle
 				if ($this->updateHasColumn('text_handle') && !$this->updateHasIndex('handle', $table)) {
 					$this->updateAddIndex('handle', $table, 333);
 				}
-				// Handle length
-				$this->updateModifyColumn('handle', 'VARCHAR(1024)', $table);
+				
 				// Make sure we have a unique key on `entry_id`
 				if ($this->updateHasColumn('entry_id', $table) && !$this->updateHasUniqueKey('entry_id', $table)) {
 					$this->updateAddUniqueKey('entry_id', $table);
@@ -200,6 +206,23 @@
 						Key_name = '{$index}'
 				"
 			);
+		}
+
+		/**
+		 * Drop the given `$index` from `$table`.
+		 *
+		 * @param string $index
+		 * @param string $table
+		 * @return boolean
+		 */
+		public function updateDropIndex($index, $table)
+		{
+			return Symphony::Database()->query("
+				ALTER TABLE
+					`$table`
+				DROP INDEX
+					`{$index}`
+			");
 		}
 
 		/**
