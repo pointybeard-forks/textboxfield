@@ -6,10 +6,7 @@
 
 	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
 
-	require_once TOOLKIT . '/class.xsltprocess.php';
 	require_once EXTENSIONS . '/textboxfield/extension.driver.php';
-	require_once FACE . '/interface.exportablefield.php';
-	require_once FACE . '/interface.importablefield.php';
 
 	/**
 	 * An enhanced text input field.
