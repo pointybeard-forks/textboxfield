@@ -737,6 +737,17 @@
 		{
 			return array(
 				array(
+					'title'				=> 'contains',
+					'filter'			=> 'contains:',
+					'help'				=> __('Find values that contain the given string.')
+				),
+				array(
+					'title'				=> 'not-contains',
+					'filter'			=> 'not-contains:',
+					'help'				=> __('Find values that do not contain the given string.')
+				),
+
+				array(
 					'title'				=> 'boolean',
 					'filter'			=> 'boolean:',
 					'help'				=> __('Find values that match the given query. Can use operators <code>and</code> and <code>not</code>.')
@@ -760,17 +771,6 @@
 					'help'				=> __('Find values that do not match the given <a href="%s">MySQL regular expressions</a>.', array(
 						'http://dev.mysql.com/doc/mysql/en/Regexp.html'
 					))
-				),
-
-				array(
-					'title'				=> 'contains',
-					'filter'			=> 'contains:',
-					'help'				=> __('Find values that contain the given string.')
-				),
-				array(
-					'title'				=> 'not-contains',
-					'filter'			=> 'not-contains:',
-					'help'				=> __('Find values that do not contain the given string.')
 				),
 
 				array(
